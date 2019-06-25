@@ -1,5 +1,7 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component } from 'react';
+import { Route, Redirect, Switch } from "react-router-dom";
+import axios from 'axios';
+
 import './App.css';
 
 function App() {

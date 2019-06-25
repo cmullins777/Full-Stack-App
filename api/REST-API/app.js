@@ -7,6 +7,9 @@ const morgan = require('morgan');
 const models = require('./models').sequelize;
 const auth = require('basic-auth');
 
+// load CORS for cross-origin sharing from 'separate domain' ports 3000 & 5000
+const cors = require('cors');
+
 // Construct the database
 const sequelize = new Sequelize({
   dialect: "sqlite",
@@ -25,6 +28,9 @@ sequelize
 
 // create the Express app
 const app = express();
+
+// use cors
+app.use(cors());
 
 // setup morgan which gives us http request logging
 app.use(morgan('dev'));
