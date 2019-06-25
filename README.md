@@ -1,1 +1,1 @@
-# Techdegree-JS---Unit-10(v2)
+A client for aschool database REST API that lets users retrieve a list of courses, view specific course detail, create, update and delete courses in the database. User account and sign-in required. This project uses React, JSX, React Router, React Context API, and Create React App.
