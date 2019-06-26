@@ -1,28 +1,27 @@
 import React, { Component } from 'react';
 import { Route, Redirect, Switch } from "react-router-dom";
+import { BrowserRouter } from 'react-router-dom';
+import logo from './logo.svg';
 import axios from 'axios';
 
 import './App.css';
+import Courses from "./components/Courses";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export default class App extends Component {
+  constructor() {
+    super();
+    this.state = {
+      results: [],
+    };
+  }
+// App layout rendered to the DOM with routes for each selection option
+  render () {
+    return (
+      <BrowserRouter>
+        <div>
+          <Route exact path="/courses" render={ () => <Courses data={this.state.results}/> } />
+        </div>
+      </BrowserRouter>
+    );
+  }
 }
-
-export default App;
