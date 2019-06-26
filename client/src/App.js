@@ -1,17 +1,13 @@
 import React, { Component } from 'react';
-import { Route, Redirect, Switch } from "react-router-dom";
-import { BrowserRouter } from 'react-router-dom';
-import logo from './logo.svg';
-import axios from 'axios';
+import { BrowserRouter, Route, Switch } from "react-router-dom";
+//import axios from 'axios';
 
-import './App.css';
-import Courses from "./components/Courses";
+import Courses from "./components/Courses.js";
 
 export default class App extends Component {
   constructor() {
     super();
     this.state = {
-      results: [],
     };
   }
 // App layout rendered to the DOM with routes for each selection option
@@ -19,7 +15,9 @@ export default class App extends Component {
     return (
       <BrowserRouter>
         <div>
-          <Route exact path="/courses" render={ () => <Courses data={this.state.results}/> } />
+          <Switch>
+            <Route exact path="/courses" render={ () => <Courses />}/>
+          </Switch>
         </div>
       </BrowserRouter>
     );
