@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Route, Redirect, Switch } from "react-router-dom";
 //import axios from 'axios';
 
 import Courses from "./components/Courses.js";
@@ -14,8 +14,9 @@ export default class App extends Component {
   render () {
     return (
       <BrowserRouter>
-        <div>
+        <div className="bounds">
           <Switch>
+            <Route exact path="/" render={ () => <Redirect to="/courses" />}/>
             <Route exact path="/courses" render={ () => <Courses />}/>
           </Switch>
         </div>

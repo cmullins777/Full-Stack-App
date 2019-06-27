@@ -19,19 +19,19 @@ class Courses extends Component {
       })
       .catch(err => {
         if(err.response.status === 500) {
-          this.props.histor.push("/error");
+          this.props.history.push("/error");
         }
       });
   }
 
   render() {
     return(
-      <div>
+      <div className="bounds">
         { this.state.courses.map((course,index) => (
-          <div>
-            <Link to={ "/courses/" + course.id } >
-              <h1 > Course </h1>
-              <h1 >{ course.title }</h1>
+          <div className="grid-33" key={index}>
+            <Link className="course--module course--link" to={ "/courses/"+course.id } >
+              <h4 className="course--label" > Course </h4>
+              <h3 className="course--title" >{ course.title }</h3>
             </Link>
           </div>
         ))
