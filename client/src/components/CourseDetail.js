@@ -18,7 +18,7 @@ class CourseDetail extends Component {
         const course = res.data.course;
         this.setState({
           course,
-          username: course.User.firstName = " " + course.User.lastName
+          username: course.User.firstName + " " + course.User.lastName
         });
    })
    .catch(err => {
@@ -49,7 +49,13 @@ class CourseDetail extends Component {
 
   render() {
     return(
-      <div>
+      <div id="root">
+        <div className="header">
+          <div className="bounds">
+            <h1 className="header--logo">Courses</h1>
+            <nav><span>Welcome {this.state.username}</span><a className="signout" href="index.html">Sign Out</a></nav>
+          </div>
+        </div>
         <div className="actions-bar">
           <div className="bounds">
             <div className="grid-100">
@@ -57,6 +63,7 @@ class CourseDetail extends Component {
                 <Link className="button" to={"/courses/"+this.state.course.id+"/update"} >Update Course</Link>
                 <button className="button" onClick={e => this.handleDelete()}>Delete Course</button>
               </span>
+             <Link className="button button-secondary" to="/courses">Return to List</Link>
             </div>
           </div>
         </div>
