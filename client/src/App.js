@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Route, Switch, Redirect, BrowserRouter } from "react-router-dom";
-import { withRouter } from "react-router-dom";
 import axios from 'axios';
 
 // Client components
@@ -18,7 +17,8 @@ class App extends Component {
 
  // Initialize state
 	state = {
-		authUserData: {}
+		authUserData: {},
+		Authenticated: false
 	};
 
 	// Signin authentication, data persisting
@@ -39,9 +39,13 @@ class App extends Component {
 					const user = res.data;
 					const name = user.firstName + " " + user.lastName;
 					console.log("SignIn successful");
+
+					// Redirect User to list of courses on SignIn
+					this.props.history.push("/courses");
+
 					this.setState({
 						user: user,
-						loggedIn: true,
+						Authenticated: true,
 						password: user.password,
 						emailAddress: user.emailAddress,
 					});
@@ -52,16 +56,13 @@ class App extends Component {
 						localStorage.setItem("username", emailAddress);
 						localStorage.setItem("password", password);
 						localStorage.setItem("name", name);
-
-					const { history, location } = props;
-					const path = location.state ? location.state.prevLocation : 'courses';
-					history.push(path);
 					}
 			}).catch(err => {
 				if(err.status === 400){
 					//login failed
 					console.log(this.state,'401');
 					console.log("SignIn failing here");
+					this.props.history.push("/error");
 					//server error, show Error page
 				} else if (err.status === 500) {
 					this.props.history.push("/error");
@@ -72,7 +73,8 @@ class App extends Component {
 	async handleSignOut(){
 		localStorage.clear();
 		await this.setState({
-			authUserData: {}
+			authUserData: {},
+			Authenticated: false
 		});
 		this.props.history.push("/courses");
 	}
@@ -110,4 +112,4 @@ class App extends Component {
 	  </UserContext.Provider>
   );}
 }
-export default withRouter(App);
+export default App;

@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { Consumer } from './UserContext';
 import { Link } from 'react-router-dom';
-import Error from './Error';
-
 
 class CreateCourse extends Component {
 // Initialize state for new Course details

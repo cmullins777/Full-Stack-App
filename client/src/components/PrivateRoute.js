@@ -7,8 +7,8 @@ const PrivateRoute = ({ component: Component , path }) => (
 	<Route
 		path={path}
 		render={(props)=>(
-			<Consumer>{ ({user, emailAddress, password, loggedIn}) => (
-				user && emailAddress && password && loggedIn ?
+			<Consumer>{ ({user, emailAddress, password, Authenticated}) => (
+				user && emailAddress && password && Authenticated ?
 				(
 					<Component {...props} />
 				)

@@ -10,12 +10,11 @@ class UserSignIn extends Component
 		};
 	// Receives SignIn data input by User
 	handleUserInput = e => {
-		e.preventDefault();
 		const input = e.target;
 		this.setState({
 			[input.name] : input.value
 		});
-	}
+	};
 
 	render(){
 		return(
@@ -24,7 +23,7 @@ class UserSignIn extends Component
 				<div className="grid-33 centered signin">
 					<h1>Sign In</h1>
 					<div>
-						<form onSubmit={ e => signIn(e, this.state.emailAddress, this.state.password)} >
+						<form onSubmit={e => signIn(e, this.state.emailAddress, this.state.password)} >
 							<div>
 								<input id="emailAddress"
 									name="emailAddress"
