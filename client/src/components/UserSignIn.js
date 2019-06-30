@@ -8,7 +8,7 @@ class UserSignIn extends Component
 			emailAddress:'',
 			password: ''
 		};
-	// input event
+	// Receives SignIn data input by User
 	handleUserInput = e => {
 		e.preventDefault();
 		const input = e.target;

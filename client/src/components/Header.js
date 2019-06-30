@@ -3,7 +3,6 @@ import { Consumer } from './UserContext';
 import { NavLink,Link } from 'react-router-dom';
 import { BrowserRouter } from "react-router-dom";
 
-
 const Header = () => {
 	return (
 		<BrowserRouter>
@@ -12,7 +11,7 @@ const Header = () => {
 			<div className="header">
 				<div className="bounds">
 					<h1 className="header--logo">Courses</h1>
-					{/*Displays welcome greeting in header for logged-in User*/}
+					{/*Displays welcome greeting for auth'd User, SignIn/Up for new User*/}
 					{ (Authenticated) ?
 						(<nav>
 							<span>Welcome {user.firstName} {user.lastName} !</span>
@@ -20,7 +19,7 @@ const Header = () => {
 						</nav>)
 						:
 						(<nav>
-							<NavLink className="signup" to="/signUp">Sign Up</NavLink>
+							<NavLink className="signup" to="/signup">Sign Up</NavLink>
 							<NavLink className="signin" to="/signin">Sign In</NavLink>
 						</nav>)
 					}
