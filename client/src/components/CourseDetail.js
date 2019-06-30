@@ -11,7 +11,7 @@ class CourseDetail extends Component {
   componentDidMount() {
     this.getCourseDetail();
   }
-
+// Axios GET request for individual course
   getCourseDetail = () => {
     axios.get("http://localhost:5000/api/courses/" + this.props.match.params.id)
       .then(res => {
@@ -21,28 +21,32 @@ class CourseDetail extends Component {
           username: course.User.firstName + " " + course.User.lastName
         });
    })
+// Display Error page for all errors
    .catch(err => {
-     if(err.response.status === 400) {
-       this.props.history.push("/notfound");
-     } else if (err.response.status === 500) {
+     if(err.response.status === 404 || 500) {
        this.props.history.push("/error");
+       console.log(err);
      }
    });
   }
-
-  handleDelete  = () => {
-  //  e.preventDefault();
-    axios("http://localhost:5000/api/courses/" + this.props.match.params.id,
-    {  method: 'DELETE',
+// Axios DELETE request to delete individual course
+  handleDelete  = (e) => {
+    e.preventDefault();
+    axios.delete("http://localhost:5000/api/courses/" + this.props.match.params.id,
+    {
+       auth: {
+         username: localStorage.getItem("username"),
+         password: localStorage.getItem("password")
+       }
     })
     .then(res => {
       this.props.history.push("/courses");
+      console.log("Course deleted.");
     })
     .catch(err => {
-      if(err.response.status === 500) {
+      if(err.response.status === 404 || 500) {
         this.props.history.push("/error");
-      } else if (err.response.status === 400) {
-        return err;
+        console.log(err);
       }
     });
   }
@@ -50,18 +54,12 @@ class CourseDetail extends Component {
   render() {
     return(
       <div id="root">
-        <div className="header">
-          <div className="bounds">
-            <h1 className="header--logo">Courses</h1>
-            <nav><span>Welcome {this.state.username}</span><a className="signout" href="index.html">Sign Out</a></nav>
-          </div>
-        </div>
         <div className="actions-bar">
           <div className="bounds">
             <div className="grid-100">
               <span>
-                <Link className="button" to={"/courses/"+this.state.course.id+"/update"} >Update Course</Link>
-                <button className="button" onClick={e => this.handleDelete()}>Delete Course</button>
+               <Link className="button" to={"/courses/"+this.state.course.id+"/update"} >Update Course</Link>
+                <button className="button" onClick={e => this.handleDelete(e)}>Delete Course</button>
               </span>
              <Link className="button button-secondary" to="/courses">Return to List</Link>
             </div>
