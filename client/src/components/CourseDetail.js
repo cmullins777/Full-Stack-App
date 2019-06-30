@@ -23,7 +23,9 @@ class CourseDetail extends Component {
    })
 // Display Error page for all errors
    .catch(err => {
-     if(err.response.status === 404 || 500) {
+     if(err.response.status === 400) {
+       this.props.history.push("/notfound");
+     } else if(err.response.status === 500) {
        this.props.history.push("/error");
        console.log(err);
      }

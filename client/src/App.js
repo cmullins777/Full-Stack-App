@@ -1,17 +1,20 @@
 import React, { Component } from 'react';
 import { Route, Switch, Redirect, BrowserRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import axios from 'axios';
 
 // Client components
 import CourseDetail from './components/CourseDetail';
 import Courses from './components/Courses';
+import CreateCourse from './components/CreateCourse';
 import Error from './components/Error';
 import Header from './components/Header';
+import PrivateRoute from './components/PrivateRoute';
 import UserContext from './components/UserContext';
 import UserSignIn from './components/UserSignIn';
 import UserSignOut from './components/UserSignOut';
 
-export default class App extends Component {
+class App extends Component {
 
  // Initialize state
 	state = {
@@ -94,6 +97,8 @@ export default class App extends Component {
 						{/*Routes for all Courses and individual Course by Id*/}
 						<Route exact path="/courses" render={() => <Courses />}/>
 						<Route exact path="/courses/:id" render={ props => <CourseDetail {...props} />} />
+						{/* Private routes for auth'd users to Create Course*/}
+						<PrivateRoute exact path="/courses/create" component={ CreateCourse } />
 						{/*Other Routes: SignOut, Error*/}
 						<Route exact path="/signout" render={() => <UserSignOut />} />
 						<Route exact path="/error" render={() => <Error />} />
@@ -105,3 +110,4 @@ export default class App extends Component {
 	  </UserContext.Provider>
   );}
 }
+export default withRouter(App);
