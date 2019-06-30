@@ -66,11 +66,11 @@ class CreateCourse extends Component {
 				<h1>Create Course</h1>
 				<div>
 				<Consumer>{ ({ emailAddress }) => (
-						<form onSubmit={e => this.handleNewCourse(e, localStorage.getItem("emailAddress"),
+					<form onSubmit={e => this.handleNewCourse(e, localStorage.getItem("emailAddress"),
             localStorage.getItem("password"))}>
 							<div className="grid-66">
 								<div className="course--header">
-									<h4 className="course--label">Course</h4>
+								 <h4 className="course--label">Course</h4>
 									<div>
 										<input
 											id="title"
@@ -120,31 +120,20 @@ class CreateCourse extends Component {
 													onChange={this.handleCourseInput} >
 													</textarea>
 												</div>
-										</li>
-									</ul>
-								</div>
-							</div>
-							<div className="grid-100 pad-bottom">
-								<button
-									className="button"
-									type="submit">
-									Create Course
-								</button>
-								<Link
-									className="button button-secondary"
-									to={"/courses/"}>
-									Cancel
-								</Link>
+									  	</li>
+								  	</ul>
+								  </div>
+						  	</div>
+						  	<div className="grid-100 pad-bottom">
+								  <button className="button" type="submit">Create Course</button>
+								  <Link className="button button-secondary" to={"/courses/"}>Cancel</Link>
 							</div>
 						</form>
-
 				)}</Consumer>
-
 				</div>
-      		</div>
+    	</div>
 		);
 	}
-
 }
 
 export default CreateCourse;
