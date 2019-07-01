@@ -23,7 +23,7 @@ class UserSignIn extends Component
 	}
 
 	render(){
-
+   
 		return(
 		<Consumer>{ ({ signIn }) =>(
 			<div className="bounds">
@@ -37,6 +37,7 @@ class UserSignIn extends Component
 									type="email"
 									className=""
 									placeholder="Email Address"
+									defaultValue = ""
 									onChange={this.handleUserInput}/>
 							</div>
 							<div>
@@ -45,6 +46,7 @@ class UserSignIn extends Component
 									type="password"
 									className=""
 									placeholder="Password"
+									defaultValue = ""
 									onChange={this.handleUserInput} />
 							</div>
 							<div className="grid-100 pad-bottom">

@@ -48,14 +48,7 @@ class App extends Component {
 						username: user.emailAddress,
 						err:{}
 					});
-
 					console.log("SignIn successful");
-
-// Redirect User to list of courses on SignIn
-			  const { history, location } = props;
-			  const path = location.state ? location.state.prevLocation : '/courses';
-			  history.push(path);
-					this.props.history.push("/courses");
 
 					// Persist data locally using React's localStorage browser instance
 					React.useEffect(() => {
@@ -78,15 +71,6 @@ class App extends Component {
 			});
 	}
 
-	handleClearForm = (e) => {
-		let input = e.target;
-		if (input.name != null) {
-			this.setState({
-				[input.name] : ""
-			});
-		}
-	}
-
 	// signOut, re-initialize state
 	async handleSignOut(){
 		localStorage.clear();
@@ -102,6 +86,7 @@ class App extends Component {
   render(){
   return (
 	  <UserContext.Provider value={{
+			Authenticated: this.state.authenticated,
 		  signIn: this.handleSignIn.bind(this),
 			signOut: this.handleSignOut.bind(this)
 				}}>
