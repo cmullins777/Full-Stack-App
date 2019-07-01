@@ -18,12 +18,14 @@ class App extends Component {
 
  // Initialize state
 	state = {
-		authUserData: {},
+		user: {},
+		username: "",
+		password: "",
 		Authenticated: false
 	};
 
 	// Signin authentication, data persisting
-	handleSignIn = (e, email, password, props) => {
+	handleSignIn = (e, emailAddress, password, props) => {
 		if(e){
 			e.preventDefault();
 		}
@@ -31,7 +33,7 @@ class App extends Component {
 		axios.get("http://localhost:5000/api/users",
 			{
 				auth: {
-					username: email,
+					username: emailAddress,
 					password: password
 				}
 			})
@@ -39,6 +41,14 @@ class App extends Component {
 				if (res.status === 200) {
 					const user = res.data;
 					const name = user.firstName + " " + user.lastName;
+					this.setState({
+						user: user,
+						Authenticated: true,
+						password: user.password,
+						username: user.emailAddress,
+						err:{}
+					});
+
 					console.log("SignIn successful");
 
 // Redirect User to list of courses on SignIn
@@ -51,7 +61,7 @@ class App extends Component {
 					React.useEffect(() => {
 						localStorage.setItem("id", user.id)
 					}, [user.id]);
-						localStorage.setItem("username", email);
+						localStorage.setItem("username", emailAddress);
 						localStorage.setItem("password", password);
 						localStorage.setItem("name", name);
 					}
@@ -67,11 +77,23 @@ class App extends Component {
 				}
 			});
 	}
+
+	handleClearForm = (e) => {
+		let input = e.target;
+		if (input.name != null) {
+			this.setState({
+				[input.name] : ""
+			});
+		}
+	}
+
 	// signOut, re-initialize state
 	async handleSignOut(){
 		localStorage.clear();
 		await this.setState({
-			authUserData: {},
+			user: {},
+			username: "",
+			password: "",
 			Authenticated: false
 		});
 		this.props.history.push("/courses");

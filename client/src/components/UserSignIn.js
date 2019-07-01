@@ -1,29 +1,36 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { Consumer } from './UserContext';
 
 class UserSignIn extends Component
 	{
 		state = {
-			emailAddress:'',
-			password: ''
+			emailAddress: "",
+			password: ""
 		};
 	// Receives SignIn data input by User
 	handleUserInput = e => {
-		const input = e.target;
+		let input = e.target;
 		this.setState({
 			[input.name] : input.value
 		});
 	};
 
+  handleSubmit = (e, signIn, emailAddress, password) => {
+	  e.preventDefault();
+		signIn(e, emailAddress, password)
+		this.props.history.push("/courses");
+	}
+
 	render(){
+
 		return(
 		<Consumer>{ ({ signIn }) =>(
 			<div className="bounds">
 				<div className="grid-33 centered signin">
 					<h1>Sign In</h1>
 					<div>
-						<form onSubmit={e => signIn(e, this.state.emailAddress, this.state.password)} >
+						<form onSubmit={e => this.handleSubmit(e, signIn, this.state.emailAddress, this.state.password)} >
 							<div>
 								<input id="emailAddress"
 									name="emailAddress"
@@ -56,4 +63,4 @@ class UserSignIn extends Component
 		 );
 	}
 }
-export default UserSignIn;
+export default withRouter(UserSignIn);

@@ -2,9 +2,11 @@ import React from 'react';
 import { Consumer } from './UserContext';
 import { NavLink,Link } from 'react-router-dom';
 
+// If values present, clear SignUp form
+
 const Header = () => {
 	return (
-		<Consumer>{({ user, Authenticated }) =>(
+		<Consumer>{({ user, Authenticated, signIn, handleClearForm }) =>(
 
 			<div className="header">
 				<div className="bounds">
@@ -17,7 +19,7 @@ const Header = () => {
 						</nav>)
 						:
 						(<nav>
-							<NavLink className="signup" to="/signup">Sign Up</NavLink>
+							<NavLink className="signup" to="/signup" onClick={e => this.handleClearForm(e, signIn, this.state.emailAddress, this.state.password)}>Sign Up</NavLink>
 							<NavLink className="signin" to="/signin">Sign In</NavLink>
 						</nav>)
 					}
