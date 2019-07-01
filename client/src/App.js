@@ -21,7 +21,7 @@ class App extends Component {
 		user: {},
 		username: "",
 		password: "",
-		Authenticated: false
+		authenticated: false
 	};
 
 	// Signin authentication, data persisting
@@ -43,7 +43,7 @@ class App extends Component {
 					const name = user.firstName + " " + user.lastName;
 					this.setState({
 						user: user,
-						Authenticated: true,
+						authenticated: true,
 						password: user.password,
 						username: user.emailAddress,
 						err:{}
@@ -57,6 +57,7 @@ class App extends Component {
 						localStorage.setItem("username", emailAddress);
 						localStorage.setItem("password", password);
 						localStorage.setItem("name", name);
+						localStorage.setItem("authenticated", true)
 					}
 			}).catch(err => {
 				if(err.status === 400){
@@ -78,15 +79,15 @@ class App extends Component {
 			user: {},
 			username: "",
 			password: "",
-			Authenticated: false
+			authenticated: false
 		});
-		this.props.history.push("/courses");
 	}
 
   render(){
   return (
 	  <UserContext.Provider value={{
-			Authenticated: this.state.authenticated,
+			user: this.state.user,
+			authenticated: this.state.authenticated,
 		  signIn: this.handleSignIn.bind(this),
 			signOut: this.handleSignOut.bind(this)
 				}}>
