@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import axios from 'axios';
 
@@ -39,6 +39,9 @@ class CourseDetail extends Component {
        auth: {
          username: localStorage.getItem("username"),
          password: localStorage.getItem("password")
+       },
+       data: {
+         id: this.state.courseId
        }
     })
     .then(res => {
@@ -100,4 +103,4 @@ class CourseDetail extends Component {
 }
 }
 
-export default CourseDetail;
+export default withRouter (CourseDetail);

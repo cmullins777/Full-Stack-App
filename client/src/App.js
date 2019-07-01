@@ -12,6 +12,7 @@ import PrivateRoute from './components/PrivateRoute';
 import UserContext from './components/UserContext';
 import UserSignIn from './components/UserSignIn';
 import UserSignOut from './components/UserSignOut';
+import UserSignUp from './components/UserSignUp';
 
 class App extends Component {
 
@@ -22,7 +23,7 @@ class App extends Component {
 	};
 
 	// Signin authentication, data persisting
-	handleSignIn = (e, emailAddress, password, props) => {
+	handleSignIn = (e, email, password, props) => {
 		if(e){
 			e.preventDefault();
 		}
@@ -30,7 +31,7 @@ class App extends Component {
 		axios.get("http://localhost:5000/api/users",
 			{
 				auth: {
-					username: emailAddress,
+					username: email,
 					password: password
 				}
 			})
@@ -40,20 +41,17 @@ class App extends Component {
 					const name = user.firstName + " " + user.lastName;
 					console.log("SignIn successful");
 
-					// Redirect User to list of courses on SignIn
+// Redirect User to list of courses on SignIn
+			  const { history, location } = props;
+			  const path = location.state ? location.state.prevLocation : '/courses';
+			  history.push(path);
 					this.props.history.push("/courses");
 
-					this.setState({
-						user: user,
-						Authenticated: true,
-						password: user.password,
-						emailAddress: user.emailAddress,
-					});
 					// Persist data locally using React's localStorage browser instance
 					React.useEffect(() => {
 						localStorage.setItem("id", user.id)
 					}, [user.id]);
-						localStorage.setItem("username", emailAddress);
+						localStorage.setItem("username", email);
 						localStorage.setItem("password", password);
 						localStorage.setItem("name", name);
 					}
@@ -85,30 +83,28 @@ class App extends Component {
 		  signIn: this.handleSignIn.bind(this),
 			signOut: this.handleSignOut.bind(this)
 				}}>
-		<div id="root">
+		 <BrowserRouter>
 			<div>
 				<Header props={this.props}/>
-				<hr />
-				<div className="bounds">
-         <BrowserRouter>
+				 <div className="bounds">
 					<Switch>
-				  	{/*Root route redirects to All Courses*/}
+				  	{/* Root route redirects to All Courses */}
 						<Route exact path="/" render={()=> <Redirect to="/courses" />}/>
-						{/*Route for User SignIn*/}
+						{/* Route for User SignIn, SignUp, SignOut */}
 						<Route exact path="/signin" render={ () => <UserSignIn />} />
-						{/*Routes for all Courses and individual Course by Id*/}
+						<Route exact path="/signup" render={() => <UserSignUp />} />
+						<Route exact path="/signout" render={() => <UserSignOut />} />
+						{/* Routes for all Courses and individual Course by Id */}
 						<Route exact path="/courses" render={() => <Courses />}/>
 						<Route exact path="/courses/:id" render={ props => <CourseDetail {...props} />} />
-						{/* Private routes for auth'd users to Create Course*/}
+						{/* Private routes for auth'd users to Create Course */}
 						<PrivateRoute exact path="/courses/create" component={ CreateCourse } />
-						{/*Other Routes: SignOut, Error*/}
-						<Route exact path="/signout" render={() => <UserSignOut />} />
+						{/* Error Route */}
 						<Route exact path="/error" render={() => <Error />} />
 					</Switch>
-         </BrowserRouter>
-				</div>
-			</div>
-		</div>
+			   </div>
+			  </div>
+			</BrowserRouter>
 	  </UserContext.Provider>
   );}
 }

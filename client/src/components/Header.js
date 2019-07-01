@@ -1,11 +1,9 @@
 import React from 'react';
 import { Consumer } from './UserContext';
 import { NavLink,Link } from 'react-router-dom';
-import { BrowserRouter } from "react-router-dom";
 
 const Header = () => {
 	return (
-		<BrowserRouter>
 		<Consumer>{({ user, Authenticated }) =>(
 
 			<div className="header">
@@ -27,7 +25,6 @@ const Header = () => {
 			</div>
 		)}
 		</Consumer>
-		</BrowserRouter>
 	);
 }
 

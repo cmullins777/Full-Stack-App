@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Consumer } from './UserContext';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 
 class CreateCourse extends Component {
 // Initialize state for new Course details
@@ -134,4 +134,4 @@ class CreateCourse extends Component {
 	}
 }
 
-export default CreateCourse;
+export default withRouter(CreateCourse);
