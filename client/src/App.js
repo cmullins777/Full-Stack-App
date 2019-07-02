@@ -49,6 +49,7 @@ class App extends Component {
 						err:{}
 					});
 					console.log("SignIn successful");
+					console.log(user.id);
 
 					// Persist data locally using React's localStorage browser instance
 					React.useEffect(() => {
