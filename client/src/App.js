@@ -87,6 +87,9 @@ class App extends Component {
   return (
 	  <UserContext.Provider value={{
 			user: this.state.user,
+
+			emailAddress: this.state.emailAddress,
+			password: this.state.password,
 			authenticated: this.state.authenticated,
 		  signIn: this.handleSignIn.bind(this),
 			signOut: this.handleSignOut.bind(this)

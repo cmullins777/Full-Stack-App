@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
+import { Consumer } from './UserContext';
 import axios from 'axios';
 
 class CourseDetail extends Component {
@@ -32,16 +33,13 @@ class CourseDetail extends Component {
    });
   }
 // Axios DELETE request to delete individual course
-  handleDelete  = (e) => {
+  handleDelete  = (e, emailAddress, password, authenticated) => {
     e.preventDefault();
     axios.delete("http://localhost:5000/api/courses/" + this.props.match.params.id,
     {
        auth: {
-         username: localStorage.getItem("username"),
-         password: localStorage.getItem("password")
-       },
-       data: {
-         id: this.state.courseId
+         username: emailAddress,
+         password: password
        }
     })
     .then(res => {
@@ -58,14 +56,24 @@ class CourseDetail extends Component {
 
   render() {
     return(
+     <Consumer>{({ user, authenticated, emailAddress, password }) => (
       <div id="root">
-        <div className="actions-bar">
+        <div className="actions--bar">
           <div className="bounds">
             <div className="grid-100">
-              <span>
-               <Link className="button" to={"/courses/"+this.state.course.id+"/update"} >Update Course</Link>
-                <button className="button" onClick={e => this.handleDelete(e)}>Delete Course</button>
-              </span>
+             { ( authenticated && (user.id === this.state.course.userId) )
+               ?
+               (
+                 <span>
+                  <Link className="button" to={"/courses/"+this.state.course.id+"/update"} >Update Course</Link>
+                  <button className="button" onClick={e => this.handleDelete(e, emailAddress, password, authenticated)}>Delete Course</button>
+                 </span>
+               )
+               :
+               (
+                 <span></span>
+               )
+             }
              <Link className="button button-secondary" to="/courses">Return to List</Link>
             </div>
           </div>
@@ -99,6 +107,7 @@ class CourseDetail extends Component {
       </div>
     </div>
   </div>
+ )}</Consumer>
 );
 }
 }
