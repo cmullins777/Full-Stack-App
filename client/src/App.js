@@ -8,8 +8,8 @@ import Courses from './components/Courses';
 import CreateCourse from './components/CreateCourse';
 import Error from './components/Error';
 import Header from './components/Header';
-import PrivateRoute from './components/PrivateRoute';
-import UserContext from './components/UserContext';
+// import PrivateRoute from './components/PrivateRoute';
+import { Provider } from './components/UserContext';
 import UserSignIn from './components/UserSignIn';
 import UserSignOut from './components/UserSignOut';
 import UserSignUp from './components/UserSignUp';
@@ -86,7 +86,8 @@ class App extends Component {
 
   render(){
   return (
-	  <UserContext.Provider value={{
+		<BrowserRouter>
+	  <Provider value={{
 			user: this.state.user,
 
 			emailAddress: this.state.emailAddress,
@@ -95,7 +96,7 @@ class App extends Component {
 		  signIn: this.handleSignIn.bind(this),
 			signOut: this.handleSignOut.bind(this)
 				}}>
-		 <BrowserRouter>
+
 			<div>
 				<Header props={this.props}/>
 				 <div className="bounds">
@@ -108,16 +109,18 @@ class App extends Component {
 						<Route exact path="/signout" render={() => <UserSignOut />} />
 						{/* Routes for all Courses and individual Course by Id */}
 						<Route exact path="/courses" render={() => <Courses />}/>
+						<Route exact path="/courses/create" component={ CreateCourse } />
 						<Route exact path="/courses/:id" render={ props => <CourseDetail {...props} />} />
 						{/* Private routes for auth'd users to Create Course */}
-						<PrivateRoute exact path="/courses/create" component={ CreateCourse } />
+		
 						{/* Error Route */}
 						<Route exact path="/error" render={() => <Error />} />
 					</Switch>
 			   </div>
 			  </div>
-			</BrowserRouter>
-	  </UserContext.Provider>
+
+	  </Provider>
+	</BrowserRouter>
   );}
 }
 export default App;

@@ -29,11 +29,10 @@ class CreateCourse extends Component {
 		axios("http://localhost:5000/api/courses", {
       method: "POST",
 			auth: {
-				username: localStorage.getItem("emailAddress"),
-				password: localStorage.getItem("password")
+				username: emailAddress,
+				password: password
 			},
 			data: {
-        user: localStorage.getItem("id"),
 				title: this.state.title,
 				description: this.state.description,
 				estimatedTime: this.state.estimatedTime,
@@ -63,9 +62,8 @@ class CreateCourse extends Component {
 			<div className="bounds course--detail">
 				<h1>Create Course</h1>
 				<div>
-				<Consumer>{ ({ emailAddress }) => (
-					<form onSubmit={e => this.handleNewCourse(e, localStorage.getItem("emailAddress"),
-            localStorage.getItem("password"))}>
+				<Consumer>{ ({ emailAddress, password, user, signIn  }) => (
+					<form onSubmit={e => this.handleNewCourse(e, emailAddress, password, user, signIn)}>
 							<div className="grid-66">
 								<div className="course--header">
 								 <h4 className="course--label">Course</h4>
@@ -78,7 +76,7 @@ class CreateCourse extends Component {
 											placeholder="Course title..."
 											onChange={this.handleCourseInput} />
 									</div>
-									<p>By {localStorage.getItem("name")}</p>
+									<p>By {user.firstName} {user.lastName}</p>
 								</div>
 								<div className="course--description">
 									<div>
