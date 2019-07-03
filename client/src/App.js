@@ -50,6 +50,8 @@ class App extends Component {
 					});
 					console.log("SignIn successful");
 					console.log(user.id);
+					console.log(emailAddress);
+					console.log(password);
 
 					// Persist data locally using React's localStorage browser instance
 					React.useEffect(() => {
@@ -71,6 +73,8 @@ class App extends Component {
 					this.props.history.push("/error");
 				}
 			});
+			console.log(localStorage.getItem("username"));
+			console.log(localStorage.getItem("password"));
 	}
 
 	// signOut, re-initialize state
@@ -112,7 +116,7 @@ class App extends Component {
 						<Route exact path="/courses/create" component={ CreateCourse } />
 						<Route exact path="/courses/:id" render={ props => <CourseDetail {...props} />} />
 						{/* Private routes for auth'd users to Create Course */}
-		
+					p
 						{/* Error Route */}
 						<Route exact path="/error" render={() => <Error />} />
 					</Switch>

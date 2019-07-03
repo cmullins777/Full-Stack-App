@@ -23,20 +23,21 @@ class CreateCourse extends Component {
 		});
 	};
 
-	handleNewCourse = (e, emailAddress, password, user, signin) => {
+	handleNewCourse = (e) => {
 		e.preventDefault();
 // Axios POST request to post course to api db
 		axios("http://localhost:5000/api/courses", {
       method: "POST",
 			auth: {
-				username: emailAddress,
-				password: password
+				username: localStorage.getItem("username"),
+				password: localStorage.getItem("password")
 			},
 			data: {
 				title: this.state.title,
 				description: this.state.description,
 				estimatedTime: this.state.estimatedTime,
 				materialsNeeded: this.state.materialsNeeded,
+				userId: localStorage.getItem("id")
 			}
 		})
 		.then(res => {
@@ -62,8 +63,8 @@ class CreateCourse extends Component {
 			<div className="bounds course--detail">
 				<h1>Create Course</h1>
 				<div>
-				<Consumer>{ ({ emailAddress, password, user, signIn  }) => (
-					<form onSubmit={e => this.handleNewCourse(e, emailAddress, password, user, signIn)}>
+				<Consumer>{ ({ user, emailAddress, password, authenticated  }) => (
+					<form onSubmit={e => this.handleNewCourse(e, user, emailAddress, password, authenticated)}>
 							<div className="grid-66">
 								<div className="course--header">
 								 <h4 className="course--label">Course</h4>
