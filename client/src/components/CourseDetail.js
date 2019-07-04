@@ -21,7 +21,7 @@ class CourseDetail extends Component {
           course,
           username: course.User.firstName + " " + course.User.lastName
         });
-        console.log(course.User.id);
+        console.log("course.User.id is" + course.User.id);
    })
 // Display Error page for all errors
    .catch(err => {
@@ -39,8 +39,8 @@ class CourseDetail extends Component {
     axios.delete("http://localhost:5000/api/courses/" + this.props.match.params.id,
     {
        auth: {
-         username: emailAddress,
-         password: password
+         username: localStorage.getItem("username"),
+ 			   password: localStorage.getItem("password")
        }
     })
     .then(res => {
@@ -57,17 +57,17 @@ class CourseDetail extends Component {
 
   render() {
     return(
-     <Consumer>{ ({ user, authenticated, emailAddress, password }) => (
+     <Consumer>{ ({ user, authenticated, emailAddress, password, signIn }) => (
       <div id="root">
         <div className="actions--bar">
           <div className="bounds">
             <div className="grid-100">
-             { ( authenticated && (user.id === this.state.course.userId) )
+             { ( user && (user.id === this.state.course.userId) )
                ?
               (
                <span>
                 <Link className="button" to={"/courses/"+this.state.course.id+"/update"}>Update Course</Link>
-                <button className="button" onClick={e => this.handleDelete(e, emailAddress, password, authenticated)}>Delete Course</button>
+                <button className="button" onClick={e => this.handleDelete(e, emailAddress, password, signIn)}>Delete Course</button>
                </span>
                )
                :

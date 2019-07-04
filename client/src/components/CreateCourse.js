@@ -42,6 +42,7 @@ class CreateCourse extends Component {
 		})
 		.then(res => {
 			this.props.history.push("/courses");
+			console.log("course successfully created");
 		}).catch(err => {
 			console.log(err.response,'err');
 			this.setState({

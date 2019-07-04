@@ -49,7 +49,7 @@ class App extends Component {
 						err:{}
 					});
 					console.log("SignIn successful");
-					console.log(user.id);
+					console.log("user.id is" + user.id);
 					console.log(emailAddress);
 					console.log(password);
 
