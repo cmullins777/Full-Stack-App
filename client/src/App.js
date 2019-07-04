@@ -10,6 +10,7 @@ import Error from './components/Error';
 import Header from './components/Header';
 // import PrivateRoute from './components/PrivateRoute';
 import { Provider } from './components/UserContext';
+import UpdateCourse from './components/UpdateCourse';
 import UserSignIn from './components/UserSignIn';
 import UserSignOut from './components/UserSignOut';
 import UserSignUp from './components/UserSignUp';
@@ -113,10 +114,12 @@ class App extends Component {
 						<Route exact path="/signout" render={() => <UserSignOut />} />
 						{/* Routes for all Courses and individual Course by Id */}
 						<Route exact path="/courses" render={() => <Courses />}/>
+						<Route exact path="/courses/:id/update" component={ UpdateCourse } />
 						<Route exact path="/courses/create" component={ CreateCourse } />
-						<Route exact path="/courses/:id" render={ props => <CourseDetail {...props} />} />
+
+						<Route exact path="/courses/:id" component={CourseDetail} />
 						{/* Private routes for auth'd users to Create Course */}
-					p
+
 						{/* Error Route */}
 						<Route exact path="/error" render={() => <Error />} />
 					</Switch>
