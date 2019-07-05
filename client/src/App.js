@@ -45,8 +45,8 @@ class App extends Component {
 					this.setState({
 						user: user,
 						authenticated: true,
-						password: user.password,
-						username: user.emailAddress,
+						password: password,
+				//		username: user.emailAddress,
 						err:{}
 					});
 					console.log("SignIn successful");

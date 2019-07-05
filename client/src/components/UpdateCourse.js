@@ -32,7 +32,7 @@ class UpdateCourse extends Component
 						description: course.description,
 						estimatedTime: course.estimatedTime,
 						materialsNeeded: course.materialsNeeded,
-						userId: course.userId,
+						userId: course.userId
 					});
 				}else{
 					this.props.history.push("/forbidden");
@@ -50,7 +50,7 @@ class UpdateCourse extends Component
 	}
 
 	// Receive Updated Course data input by User
-		handleUpdateInput = (e) => {
+		handleUpdateInput = (e, signIn) => {
 			e.preventDefault();
 			const input = e.target;
 			this.setState({
@@ -59,7 +59,7 @@ class UpdateCourse extends Component
 		};
 
 	// Submit update
-	handleSubmit = (e) =>{
+	handleSubmit = (e, signIn) =>{
 		e.preventDefault();
 
 // Axios PUT request to post course to api db
@@ -74,7 +74,8 @@ class UpdateCourse extends Component
 					title: this.state.title,
 					description: this.state.description,
 					estimatedTime: this.state.estimatedTime,
-					materialsNeeded: this.state.materialsNeeded
+					materialsNeeded: this.state.materialsNeeded,
+					userId: this.state.userId
 				}
 			})
 			.then( res => {
@@ -102,11 +103,11 @@ class UpdateCourse extends Component
 
 	render(){
 		return(
-			<Consumer>{ ({ user, emailAddress, password }) => (
+			<Consumer>{ ({ user, userId, emailAddress, password, signIn }) => (
 				<div className="bounds course--detail">
 					<h1>Update Course</h1>
 					<div>
-						<form onSubmit={ e => this.handleSubmit(e, user, emailAddress, password )}>
+						<form onSubmit={ e => this.handleSubmit(e, user, userId, emailAddress, password, signIn )}>
 							<div className="grid-66">
 								<div className="course--header">
 									<h4 className="course--label">Course</h4>
