@@ -19,11 +19,12 @@ class UserSignIn extends Component
   handleSubmit = (e, signIn, emailAddress, password) => {
 	  e.preventDefault();
 		signIn(e, emailAddress, password)
+
 		this.props.history.push("/courses");
 	}
 
 	render(){
-   
+
 		return(
 		<Consumer>{ ({ signIn }) =>(
 			<div className="bounds">

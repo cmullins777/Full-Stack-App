@@ -21,7 +21,10 @@ class CourseDetail extends Component {
           course,
           username: course.User.firstName + " " + course.User.lastName
         });
-        console.log("course.User.id is" + course.User.id);
+        console.log("course.User.id is " + course.User.id);
+        console.log(localStorage.getItem("id"));
+        console.log(this.state.course.userId);
+
    })
 // Display Error page for all errors
    .catch(err => {
@@ -57,12 +60,12 @@ class CourseDetail extends Component {
 
   render() {
     return(
-     <Consumer>{ ({ user, authenticated, emailAddress, password, signIn }) => (
+     <Consumer>{ ({ user, userId, authenticated, emailAddress, password, signIn }) => (
       <div id="root">
         <div className="actions--bar">
           <div className="bounds">
             <div className="grid-100">
-             { ( user && (user.id === this.state.course.userId) )
+             { ( authenticated && (userId === this.state.course.userId) )
                ?
               (
                <span>

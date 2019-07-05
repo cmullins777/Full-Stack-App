@@ -22,10 +22,11 @@ class UpdateCourse extends Component
 	getCourse = () => {
 		axios.get("http://localhost:5000/api/courses/" + this.props.match.params.id)
 			.then(res => {
-				const course = res.data;
-				console.log(course.User.id);
+				const course = res.data.course;
+				console.log("course.userId is" + course.userId);
+				console.log(course.userId);
 				console.log(localStorage.getItem("id"));
-				if(course.User.Id === localStorage.getItem("id")){
+				if(course.userId === parseInt(localStorage.getItem("id"))){
 					this.setState({
 						id: course.id,
 						title: course.title,
@@ -34,7 +35,7 @@ class UpdateCourse extends Component
 						materialsNeeded: course.materialsNeeded,
 						userId: course.userId
 					});
-				}else{
+				} else {
 					this.props.history.push("/forbidden");
 				}
 			})
@@ -50,7 +51,7 @@ class UpdateCourse extends Component
 	}
 
 	// Receive Updated Course data input by User
-		handleUpdateInput = (e, signIn) => {
+		handleUpdateInput = (e) => {
 			e.preventDefault();
 			const input = e.target;
 			this.setState({
@@ -59,7 +60,7 @@ class UpdateCourse extends Component
 		};
 
 	// Submit update
-	handleSubmit = (e, signIn) =>{
+	handleSubmit = (e, user, emailAddress, password, signIn, authenticated) =>{
 		e.preventDefault();
 
 // Axios PUT request to post course to api db
@@ -103,11 +104,11 @@ class UpdateCourse extends Component
 
 	render(){
 		return(
-			<Consumer>{ ({ user, userId, emailAddress, password, signIn }) => (
+			<Consumer>{ ({ user, userId, authenticated, emailAddress, password, signIn }) => (
 				<div className="bounds course--detail">
 					<h1>Update Course</h1>
 					<div>
-						<form onSubmit={ e => this.handleSubmit(e, user, userId, emailAddress, password, signIn )}>
+						<form onSubmit={ e => this.handleSubmit(e, user, userId, emailAddress, password, signIn, authenticated)}>
 							<div className="grid-66">
 								<div className="course--header">
 									<h4 className="course--label">Course</h4>

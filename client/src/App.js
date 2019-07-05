@@ -44,26 +44,29 @@ class App extends Component {
 					const name = user.firstName + " " + user.lastName;
 					this.setState({
 						user: user,
+						userId: user.id,
 						authenticated: true,
-						password: password,
-				//		username: user.emailAddress,
+						password: user.password,
+						username: user.emailAddress,
 						err:{}
 					});
 					console.log("SignIn successful");
-					console.log("user.id is" + user.id);
+					console.log("user.id is " + user.id);
+					console.log(user);
+
 					console.log(emailAddress);
 					console.log(password);
 
 					// Persist data locally using React's localStorage browser instance
-					React.useEffect(() => {
-						localStorage.setItem("id", user.id)
-					}, [user.id]);
-						localStorage.setItem("username", emailAddress);
-						localStorage.setItem("password", password);
-						localStorage.setItem("name", name);
-						localStorage.setItem("authenticated", true)
-					}
-			}).catch(err => {
+
+					localStorage.setItem("id", user.id);
+					localStorage.setItem("user", user);
+					localStorage.setItem("username", emailAddress);
+					localStorage.setItem("password", password);
+		//			localStorage.setItem("name", name);
+					localStorage.setItem("authenticated", true)
+
+			}}).catch(err => {
 				if(err.status === 400){
 					//login failed
 					console.log(this.state,'401');
@@ -94,7 +97,7 @@ class App extends Component {
 		<BrowserRouter>
 	  <Provider value={{
 			user: this.state.user,
-
+			userId: this.state.user.id,
 			emailAddress: this.state.emailAddress,
 			password: this.state.password,
 			authenticated: this.state.authenticated,
