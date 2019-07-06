@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
-import { Consumer } from './UserContext';
 import axios from 'axios';
 
 class UserSignUp extends Component
@@ -10,7 +9,8 @@ class UserSignUp extends Component
 			lastName: "",
 			emailAddress: "",
 			password: "",
-			confirmPassword: ""
+			confirmPassword: "",
+			errMsg: ""
 		};
 	// Receives SignIn data input by User
 	handleUserInput = e => {
@@ -24,29 +24,63 @@ class UserSignUp extends Component
 	  e.preventDefault();
 
 	  const { firstName, lastName, emailAddress, password, confirmPassword } = this.state;
-		if (password === "") {
 
+		if ((firstName === "" ||
+				 lastName === "" ||
+				 emailAddress === "" ||
+				 password === "" ||
+				 confirmPassword === "")) {
+		  this.setState({
+				errMsg: 'Please complete all fields below'
+			})
+		} else if (password !== confirmPassword) {
+			this.setState({
+				errMsg: 'Passwords do not match'
+			})
 			this.props.history.push("/error");
 			console.log(err);
-		}
-		axios.post("http://localhost.5000/api/users", {firstName, lastName, emailAddress, password})
+
+		} else {
+		axios.post("http://localhost:5000/api/users", {firstName, lastName, emailAddress, password})
 		  .then(res => {
 				if(res.status === 201) {
 					console.log(`User ${firstName} ${lastName} successfully created`);
-					this.props.signUp(null, emailAddress, password);
+					this.setState({
+						errMsg: ""
+					})
+					this.props.signIn(null, { emailAddress, password });
 				}
 			})
-		this.props.history.push("/courses");
-	}
+			.catch(err => {
+				if(err.status === 400 || err.status === 500){
+					this.setState({
+						errMsg: "other error"
+					})
+					this.props.history.push("/error");
+				}
+			});
 
+	}
+  }
   	render(){
+			const { firstName, lastName, emailAddress, password, errMsg } = this.state;
+
   		return(
-  		<Consumer>{ ({ signUp }) =>(
   			<div className="bounds">
   				<div className="grid-33 centered signin">
   					<h1>Sign Up</h1>
   					<div>
-  						<form onSubmit={ e => this.handleSignUp(e, this.state)} >
+						 { errMsg ? (
+							<div>
+							 <h2 className='validation--errors--label'>Registration Error</h2>
+							  <div className='validation-errors'>
+								 <ul>
+									<li>{errMsg}</li>
+								 </ul>
+							  </div>
+						  	</div>
+							) : ""}
+  						<form onSubmit={ e => this.handleSignUp(e, firstName, lastName, emailAddress, password)} >
   							<div>
 								<input id="firstName"
 									name="firstName"
@@ -80,8 +114,8 @@ class UserSignUp extends Component
   									onChange={this.handleUserInput} />
   							</div>
 								<div>
-  								<input id="password"
-  									name="password"
+  								<input id="confirmPassword"
+  									name="confirmPassword"
   									type="password"
   									className=""
   									placeholder="Confirm Password"
@@ -97,7 +131,7 @@ class UserSignUp extends Component
   					<p>Already have a user account? <Link to="/signIn"> Click here </Link> to sign in!</p>
   				</div>
   			</div>
-  		)}</Consumer>
+
   		 );
   	}
   }
