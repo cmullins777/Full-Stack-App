@@ -48,7 +48,8 @@ class UserSignUp extends Component
 					this.setState({
 						errMsg: ""
 					})
-					this.props.signIn(null, { emailAddress, password });
+					this.props.history.push("/signin");
+					this.props.signIn({ emailAddress, password});
 				}
 			})
 			.catch(err => {
