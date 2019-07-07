@@ -56,6 +56,7 @@ class CreateCourse extends Component {
 			});
 			if(err.response.status === 500){
 				this.props.history.push("/error");
+				console.log(err.response, err);
 			}
 		});
 	}

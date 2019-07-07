@@ -8,7 +8,7 @@ import Courses from './components/Courses';
 import CreateCourse from './components/CreateCourse';
 import Error from './components/Error';
 import Header from './components/Header';
-// import PrivateRoute from './components/PrivateRoute';
+import PrivateRoute from './components/PrivateRoute';
 import { Provider } from './components/UserContext';
 import UpdateCourse from './components/UpdateCourse';
 import UserSignIn from './components/UserSignIn';
@@ -118,14 +118,13 @@ class App extends Component {
 						<Route exact path="/signin" render={ () => <UserSignIn />} />
 						<Route exact path="/signup" render={() => <UserSignUp />} />
 						<Route exact path="/signout" render={() => <UserSignOut />} />
-						{/* Routes for all Courses and individual Course by Id */}
+						{/* Route for all Courses */}
 						<Route exact path="/courses" render={() => <Courses />}/>
-						<Route exact path="/courses/:id/update" component={ UpdateCourse } />
-						<Route exact path="/courses/create" component={ CreateCourse } />
-
+						{/* Private routes for auth'd users to Create Course, Update Course */}
+						<PrivateRoute exact path="/courses/:id/update" component={ UpdateCourse } />
+						<PrivateRoute exact path="/courses/create" component={ CreateCourse } />
+						{/* Route to view individual course */}
 						<Route exact path="/courses/:id" component={CourseDetail} />
-						{/* Private routes for auth'd users to Create Course */}
-
 						{/* Error Route */}
 						<Route exact path="/error" render={() => <Error />} />
 					</Switch>

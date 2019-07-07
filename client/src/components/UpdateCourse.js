@@ -11,8 +11,8 @@ class UpdateCourse extends Component
 		description: "",
 		estimatedTime: "",
 		materialsNeeded: "",
-		userId :'',
-		err: {}
+		userId :"",
+		errMsg: ""
 	};
 
 	componentDidMount(){
@@ -33,20 +33,17 @@ class UpdateCourse extends Component
 						description: course.description,
 						estimatedTime: course.estimatedTime,
 						materialsNeeded: course.materialsNeeded,
-						userId: course.userId
+						userId: course.userId,
+						errMsg: ""
 					});
-				} else {
-					this.props.history.push("/forbidden");
 				}
 			})
 			.catch(err => {
 				if (err.status === 400) {
-					this.props.history.push("/notfound");
+					this.props.history.push("/error");
 				} else if (err.status === 500) {
 					this.props.history.push("/error");
-				} else if (err.status === 403){
-					this.props.history.push("/forbidden");
-				}
+				} 
 			});
 	}
 
@@ -60,9 +57,13 @@ class UpdateCourse extends Component
 		};
 
 	// Submit update
-	handleSubmit = (e, user, emailAddress, password, signIn, authenticated) =>{
+	handleUpdateCourse = (e, user, emailAddress, password, signIn, authenticated) =>{
 		e.preventDefault();
-//		console.log(emailAddress, password);
+		const { title, description } = this.state;
+
+		if (title === "" || description === "") {
+			this.setState({ errMsg: "Please enter both course title and description" })
+		} else {
 // Axios PUT request to post course to api db
 		axios({
 			method: 'put',
@@ -97,6 +98,7 @@ class UpdateCourse extends Component
 					console.log(localStorage.getItem("password"));
 				}
 			});
+		}
 	}
 
 	handleCancel = (e) => {
@@ -105,12 +107,23 @@ class UpdateCourse extends Component
   };
 
 	render(){
+		const { title, description, estimatedTime, materialsNeeded, errMsg } = this.state;
 		return(
 			<Consumer>{ ({ user, userId, authenticated, emailAddress, password, signIn }) => (
 				<div className="bounds course--detail">
 					<h1>Update Course</h1>
 					<div>
-						<form onSubmit={ e => this.handleSubmit(e, user, userId, emailAddress, password, signIn, authenticated)}>
+					  { errMsg ? (
+							<div>
+							  <h2 className="validation--errors--label">Registration Error</h2>
+								<div className="validation-errors">
+								 <ul>
+								  <li>{ errMsg }</li>
+								 </ul>
+								</div>
+							</div>
+						) : ''}
+						<form onSubmit={ e => this.handleUpdateCourse(e, user, userId, emailAddress, password, title, description, materialsNeeded, estimatedTime)}>
 							<div className="grid-66">
 								<div className="course--header">
 									<h4 className="course--label">Course</h4>

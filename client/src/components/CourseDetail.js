@@ -28,11 +28,12 @@ class CourseDetail extends Component {
    })
 // Display Error page for all errors
    .catch(err => {
-     if(err.response.status === 400) {
-       this.props.history.push("/notfound");
+     if(err.response.status === 400 ) {
+       this.props.history.push("/error");
+       console.log(err.response, err);
      } else if(err.response.status === 500) {
        this.props.history.push("/error");
-       console.log(err);
+       console.log(err.response, err);
      }
    });
   }
