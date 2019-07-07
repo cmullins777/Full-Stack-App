@@ -78,7 +78,7 @@ class UserSignUp extends Component
 							 <h2 className='validation--errors--label'>Registration Error</h2>
 							  <div className='validation-errors'>
 								 <ul>
-									<li>{errMsg}</li>
+									<li>{ errMsg }</li>
 								 </ul>
 							  </div>
 						  	</div>

@@ -22,7 +22,8 @@ class App extends Component {
 		user: {},
 		username: "",
 		password: "",
-		authenticated: false
+		authenticated: false,
+		errMsg: ""
 	};
 
 	// Signin authentication, data persisting
@@ -47,7 +48,6 @@ class App extends Component {
 						authenticated: true,
 						password: user.password,
 						username: user.emailAddress,
-						err:{}
 					});
 					console.log("SignIn successful");
 					console.log("user.id is " + user.id);
@@ -104,7 +104,8 @@ class App extends Component {
 			password: this.state.password,
 			authenticated: this.state.authenticated,
 		  signIn: this.handleSignIn.bind(this),
-			signOut: this.handleSignOut.bind(this)
+			signOut: this.handleSignOut.bind(this),
+			errMsg: this.errMsg
 				}}>
 
 			<div>

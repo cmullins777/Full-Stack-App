@@ -16,7 +16,7 @@ class UserSignIn extends Component
 		});
 	};
 
-  handleSubmit = (e, signIn, emailAddress, password) => {
+  handleSignIn = (e, signIn, emailAddress, password) => {
 	  e.preventDefault();
 		signIn(e, emailAddress, password);
 		this.props.history.push("/courses");
@@ -30,7 +30,7 @@ class UserSignIn extends Component
 				<div className="grid-33 centered signin">
 					<h1>Sign In</h1>
 					<div>
-						<form onSubmit={e => this.handleSubmit(e, signIn, this.state.emailAddress, this.state.password)} >
+						<form onSubmit={e => this.handleSignIn(e, signIn, this.state.emailAddress, this.state.password)} >
 							<div>
 								<input id="emailAddress"
 									name="emailAddress"

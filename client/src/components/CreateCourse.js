@@ -11,7 +11,7 @@ class CreateCourse extends Component {
 		description: "",
 		estimatedTime: "",
 		materialsNeeded: "",
-		err:{}
+		errMsg: ""
 	};
 
 // Receives Course data input by User
@@ -25,6 +25,12 @@ class CreateCourse extends Component {
 
 	handleNewCourse = (e) => {
 		e.preventDefault();
+		const { title, description } = this.state;
+		if ( title === "" || description === "") {
+			this.setState({
+				errMsg: "Please enter both a course title and description"
+			})
+		} else {
 // Axios POST request to post course to api db
 		axios("http://localhost:5000/api/courses", {
       method: "POST",
@@ -46,13 +52,14 @@ class CreateCourse extends Component {
 		}).catch(err => {
 			console.log(err.response,'err');
 			this.setState({
-			  err:err.response
+			  errMsg: err.response.message
 			});
 			if(err.response.status === 500){
 				this.props.history.push("/error");
 			}
 		});
 	}
+}
 
   handleCancel = (e) => {
       e.preventDefault();
@@ -60,12 +67,26 @@ class CreateCourse extends Component {
     };
 
 	render(){
+		const { title, description, estimatedTime, materialsNeeded, errMsg } = this.state;
 		return(
 			<div className="bounds course--detail">
 				<h1>Create Course</h1>
 				<div>
 				<Consumer>{ ({ user, emailAddress, password, authenticated  }) => (
-					<form onSubmit={e => this.handleNewCourse(e, user, emailAddress, password, authenticated)}>
+
+			  	<div>
+				 	{ errMsg ? (
+						<div>
+						  <h2 className="validation--errors--label">Registration Error</h2>
+							<div className="validation-errors">
+							  <ul>
+								  <li>{ errMsg }</li>
+								</ul>
+							</div>
+						</div>
+					) : ''}
+
+					<form onSubmit={e => this.handleNewCourse(e, user, emailAddress, password, title, description, materialsNeeded, estimatedTime, authenticated)}>
 							<div className="grid-66">
 								<div className="course--header">
 								 <h4 className="course--label">Course</h4>
@@ -127,6 +148,7 @@ class CreateCourse extends Component {
 								  <Link className="button button-secondary" to={"/courses/"}>Cancel</Link>
 							</div>
 						</form>
+					</div>
 				)}</Consumer>
 				</div>
     	</div>
