@@ -41,7 +41,6 @@ class App extends Component {
 			.then(res => {
 				if (res.status === 200) {
 					const user = res.data;
-					const name = user.firstName + " " + user.lastName;
 					this.setState({
 						user: user,
 						userId: user.id,
@@ -82,7 +81,7 @@ class App extends Component {
 	}
 
 	// signOut, re-initialize state
-	async handleSignOut(){
+	async handleSignOut(username, password, userId){
 		localStorage.clear();
 		await this.setState({
 			user: {},
@@ -90,6 +89,9 @@ class App extends Component {
 			password: "",
 			authenticated: false
 		});
+		console.log("username is " + username);
+		console.log("password is " + password);
+		console.log("userId is " + userId);
 	}
 
   render(){

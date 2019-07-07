@@ -62,7 +62,7 @@ class UpdateCourse extends Component
 	// Submit update
 	handleSubmit = (e, user, emailAddress, password, signIn, authenticated) =>{
 		e.preventDefault();
-		console.log(emailAddress, password);
+//		console.log(emailAddress, password);
 // Axios PUT request to post course to api db
 		axios({
 			method: 'put',
@@ -83,6 +83,7 @@ class UpdateCourse extends Component
 			.then( res => {
 				// Show course details after updating
 				this.props.history.push("/courses/"+this.props.match.params.id);
+				console.log("Course successfully updated");
 			})
 			.catch(err => {
 				this.setState({

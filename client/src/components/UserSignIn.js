@@ -18,8 +18,7 @@ class UserSignIn extends Component
 
   handleSubmit = (e, signIn, emailAddress, password) => {
 	  e.preventDefault();
-		signIn(e, emailAddress, password)
-
+		signIn(e, emailAddress, password);
 		this.props.history.push("/courses");
 	}
 

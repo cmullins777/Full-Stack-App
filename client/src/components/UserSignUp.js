@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import axios from 'axios';
+import UserContext from "./UserContext";
 
 class UserSignUp extends Component
 	{
@@ -20,7 +21,7 @@ class UserSignUp extends Component
 		});
 	};
 
-  handleSignUp = (e, err) => {
+  handleSignUp = (e, err, signIn) => {
 	  e.preventDefault();
 
 	  const { firstName, lastName, emailAddress, password, confirmPassword } = this.state;
@@ -46,10 +47,11 @@ class UserSignUp extends Component
 				if(res.status === 201) {
 					console.log(`User ${firstName} ${lastName} successfully created`);
 					this.setState({
+						authenticated: true,
 						errMsg: ""
 					})
-					this.props.history.push("/signin");
-					this.props.signIn({ emailAddress, password});
+					this.context.signIn(null, emailAddress, password);
+				  this.props.history.push("/courses");
 				}
 			})
 			.catch(err => {
@@ -64,7 +66,7 @@ class UserSignUp extends Component
 	}
   }
   	render(){
-			const { firstName, lastName, emailAddress, password, errMsg } = this.state;
+			const { firstName, lastName, emailAddress, password, errMsg, signIn } = this.state;
 
   		return(
   			<div className="bounds">
@@ -81,7 +83,7 @@ class UserSignUp extends Component
 							  </div>
 						  	</div>
 							) : ""}
-  						<form onSubmit={ e => this.handleSignUp(e, firstName, lastName, emailAddress, password)} >
+  						<form onSubmit={ e => this.handleSignUp(e, signIn, firstName, lastName, emailAddress, password)} >
   							<div>
 								<input id="firstName"
 									name="firstName"
@@ -136,4 +138,6 @@ class UserSignUp extends Component
   		 );
   	}
   }
+
+	UserSignUp.contextType = UserContext;
   export default withRouter(UserSignUp);
