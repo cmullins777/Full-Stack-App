@@ -27,7 +27,7 @@ class App extends Component {
 	};
 
 	// Signin authentication, data persisting
-	handleSignIn = (e, emailAddress, password, props) => {
+	handleSignIn = (e, emailAddress, password, props, err) => {
 		if(e){
 			e.preventDefault();
 		}
@@ -66,15 +66,18 @@ class App extends Component {
 					localStorage.setItem("authenticated", true)
 
 			}}).catch(err => {
-				if(err.status === 400){
-					//login failed
-					console.log(this.state,'401');
-					console.log("SignIn failing here");
-					this.props.history.push("/error");
-					//server error, show Error page
-				} else if (err.status === 500) {
-					this.props.history.push("/error");
-				}
+					if(err.response.status === 400){
+						this.setState({
+							errMsg: err.response.data.error.message
+						})
+					} else if (err.status === 401){
+						this.setState({
+							errMsg: err.response.message
+						})
+					}	else {
+						console.log(err.response.status);
+						console.log(err);
+					}
 			});
 			console.log(localStorage.getItem("username"));
 			console.log(localStorage.getItem("password"));

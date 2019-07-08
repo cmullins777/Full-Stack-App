@@ -23,14 +23,14 @@ class CreateCourse extends Component {
 		});
 	};
 
-	handleNewCourse = (e) => {
+	handleNewCourse = (e, error) => {
 		e.preventDefault();
-		const { title, description } = this.state;
-		if ( title === "" || description === "") {
-			this.setState({
-				errMsg: "Please enter both a course title and description"
-			})
-		} else {
+//		const { title, description } = this.state;
+//		if ( title === "" || description === "") {
+//			this.setState({
+//				errMsg: "Please enter both a course title and description"
+//			})
+//		} else {
 // Axios POST request to post course to api db
 		axios("http://localhost:5000/api/courses", {
       method: "POST",
@@ -50,6 +50,23 @@ class CreateCourse extends Component {
 			this.props.history.push("/courses");
 			console.log("course successfully created");
 		}).catch(err => {
+			if(err.response.status === 400){
+				this.setState({
+					errMsg: err.response.data.err[0].message
+				})
+			} else if (err.status === 401){
+				this.setState({
+					errMsg: err.response.message
+				})
+			}	else {
+				this.props.history.push("/error");
+				console.log(err.response.status);
+				console.log(err.response.data.error.message);
+		}
+	});
+/*
+--------------
+		catch(err => {
 			console.log(err.response,'err');
 			this.setState({
 			  errMsg: err.response.message
@@ -59,8 +76,10 @@ class CreateCourse extends Component {
 				console.log(err.response, err);
 			}
 		});
+--------------
+*/
 	}
-}
+
 
   handleCancel = (e) => {
       e.preventDefault();

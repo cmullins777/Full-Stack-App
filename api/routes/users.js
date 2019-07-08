@@ -19,8 +19,8 @@ router.get('/', authenticate, (req, res) => {
 
 // Send a POST request to /api/users to CREATE a new user, sets Location header to "/", returns no content
 router.post('/', (req, res, next) => {
-  if (!req.body.emailAddress || !req.body.password) {
-      const err = new Error('Please enter a valid email address and password.');
+  if (!req.body.firstName || !req.body.lastName || !req.body.emailAddress || !req.body.password) {
+      const err = new Error('Please enter a first name, last name, valid email address and password.');
       err.status = 400;
       next(err);
   } else {

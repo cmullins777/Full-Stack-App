@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
       unique: true,
       validate: {
         notEmpty: {
-          msg: "Title is rquired"
+          msg: "Title and description are both required"
         }
       }
     },

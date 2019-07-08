@@ -21,24 +21,15 @@ class UserSignUp extends Component
 		});
 	};
 
-  handleSignUp = (e, err, signIn) => {
+  handleSignUp = (e, err, error, signIn) => {
 	  e.preventDefault();
 
 	  const { firstName, lastName, emailAddress, password, confirmPassword } = this.state;
 
-		if ((firstName === "" ||
-				 lastName === "" ||
-				 emailAddress === "" ||
-				 password === "" ||
-				 confirmPassword === "")) {
-		  this.setState({
-				errMsg: 'Please complete all fields below'
-			})
-		} else if (password !== confirmPassword) {
+		if (password !== confirmPassword) {
 			this.setState({
 				errMsg: 'Passwords do not match'
 			})
-			this.props.history.push("/error");
 			console.log(err);
 
 		} else {
@@ -47,19 +38,27 @@ class UserSignUp extends Component
 				if(res.status === 201) {
 					console.log(`User ${firstName} ${lastName} successfully created`);
 					this.setState({
-						authenticated: true,
 						errMsg: ""
-					})
+					});
+
+					console.log(password, confirmPassword);
 					this.context.signIn(null, emailAddress, password);
 				  this.props.history.push("/courses");
 				}
 			})
 			.catch(err => {
-				if(err.status === 400 || err.status === 500){
+				if(err.response.status === 400){
 					this.setState({
-						errMsg: "other error"
+						errMsg: err.response.data.error.message
 					})
+				} else if (err.status === 401){
+					this.setState({
+						errMsg: err.response.message
+					})
+				}	else {
 					this.props.history.push("/error");
+					console.log(err.response.status);
+					console.log(err.response.data.error.message);
 				}
 			});
 

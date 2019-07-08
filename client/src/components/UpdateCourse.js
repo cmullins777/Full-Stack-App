@@ -43,7 +43,7 @@ class UpdateCourse extends Component
 					this.props.history.push("/error");
 				} else if (err.status === 500) {
 					this.props.history.push("/error");
-				} 
+				}
 			});
 	}
 
@@ -57,13 +57,13 @@ class UpdateCourse extends Component
 		};
 
 	// Submit update
-	handleUpdateCourse = (e, user, emailAddress, password, signIn, authenticated) =>{
+	handleUpdateCourse = (e, err, error, user, emailAddress, password, signIn, authenticated) =>{
 		e.preventDefault();
-		const { title, description } = this.state;
-
-		if (title === "" || description === "") {
-			this.setState({ errMsg: "Please enter both course title and description" })
-		} else {
+//		const { title, description } = this.state;
+//
+//		if (title === "" || description === "") {
+//			this.setState({ errMsg: "Please enter both course title and description" })
+//	  } else {
 // Axios PUT request to post course to api db
 		axios({
 			method: 'put',
@@ -87,18 +87,24 @@ class UpdateCourse extends Component
 				console.log("Course successfully updated");
 			})
 			.catch(err => {
-				this.setState({
-					err: err.response,
-				});
-				if(err.response.status === 500){
+				if(err.response.status === 400){
+					this.setState({
+						errMsg: err.response.data.error.message
+					})
+					console.log(err.response.status);
+					console.log(err.response.data.error.message);
+				} else if (err.status === 401){
+					this.setState({
+						errMsg: err.response.message
+					})
+				}	else {
 					this.props.history.push("/error");
-				} else {
-					console.log('erroring here');
+					console.log(err.response.status);
+					console.log(err.response.data.error.message);
+			}
+		});
 					console.log(localStorage.getItem("username"));
 					console.log(localStorage.getItem("password"));
-				}
-			});
-		}
 	}
 
 	handleCancel = (e) => {
