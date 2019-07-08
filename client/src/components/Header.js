@@ -2,8 +2,6 @@ import React from 'react';
 import { Consumer } from './UserContext';
 import { NavLink, Link } from 'react-router-dom';
 
-// If values present, clear SignUp form
-
 const Header = () => {
 	return (
 		<Consumer>{({ user, authenticated, signOut }) =>(
@@ -13,7 +11,7 @@ const Header = () => {
 					<h1 className="header--logo">
 					  <NavLink to="/courses">Courses</NavLink>
 					</h1>
-					{/*Displays welcome greeting for auth'd User, SignIn/Up for new User*/}
+	{/*Displays welcome greeting for auth'd User, SignIn/Up for new User*/}
 					{ (authenticated) ?
 							(<nav>
 								<span>Welcome {user.firstName} {user.lastName} !</span>

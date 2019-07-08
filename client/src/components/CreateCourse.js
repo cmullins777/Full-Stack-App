@@ -25,12 +25,7 @@ class CreateCourse extends Component {
 
 	handleNewCourse = (e, error) => {
 		e.preventDefault();
-//		const { title, description } = this.state;
-//		if ( title === "" || description === "") {
-//			this.setState({
-//				errMsg: "Please enter both a course title and description"
-//			})
-//		} else {
+
 // Axios POST request to post course to api db
 		axios("http://localhost:5000/api/courses", {
       method: "POST",
@@ -49,42 +44,22 @@ class CreateCourse extends Component {
 		.then(res => {
 			this.props.history.push("/courses");
 			console.log("course successfully created");
+//  Catch Validation Errors returned from the REST API and display for user guidance, for other errors redirect to Errors page
 		}).catch(err => {
 			if(err.response.status === 400){
 				this.setState({
 					errMsg: err.response.data.err[0].message
 				})
-			} else if (err.status === 401){
+			} else if (err.response.status === 401){
 				this.setState({
-					errMsg: err.response.message
+					errMsg: err.response.data.error.message
 				})
 			}	else {
 				this.props.history.push("/error");
 				console.log(err.response.status);
-				console.log(err.response.data.error.message);
 		}
-	});
-/*
---------------
-		catch(err => {
-			console.log(err.response,'err');
-			this.setState({
-			  errMsg: err.response.message
-			});
-			if(err.response.status === 500){
-				this.props.history.push("/error");
-				console.log(err.response, err);
-			}
-		});
---------------
-*/
+	 });
 	}
-
-
-  handleCancel = (e) => {
-      e.preventDefault();
-      this.props.history.push("/courses");
-    };
 
 	render(){
 		const { title, description, estimatedTime, materialsNeeded, errMsg } = this.state;
@@ -93,7 +68,6 @@ class CreateCourse extends Component {
 				<h1>Create Course</h1>
 				<div>
 				<Consumer>{ ({ user, emailAddress, password, authenticated  }) => (
-
 			  	<div>
 				 	{ errMsg ? (
 						<div>
@@ -105,7 +79,6 @@ class CreateCourse extends Component {
 							</div>
 						</div>
 					) : ''}
-
 					<form onSubmit={e => this.handleNewCourse(e, user, emailAddress, password, title, description, materialsNeeded, estimatedTime, authenticated)}>
 							<div className="grid-66">
 								<div className="course--header">

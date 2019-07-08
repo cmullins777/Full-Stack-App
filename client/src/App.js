@@ -17,7 +17,7 @@ import UserSignUp from './components/UserSignUp';
 
 class App extends Component {
 
- // Initialize state
+// Initialize state
 	state = {
 		user: {},
 		username: "",
@@ -26,12 +26,12 @@ class App extends Component {
 		errMsg: ""
 	};
 
-	// Signin authentication, data persisting
+// Signin authentication, data persisting
 	handleSignIn = (e, emailAddress, password, props, err) => {
 		if(e){
 			e.preventDefault();
 		}
-	// Authenticate user by request to REST API's users endpoint
+// Authenticate user by request to REST API's users endpoint
 		axios.get("http://localhost:5000/api/users",
 			{
 				auth: {
@@ -56,13 +56,11 @@ class App extends Component {
 					console.log(emailAddress);
 					console.log(password);
 
-					// Persist data locally using React's localStorage browser instance
-
+	// Persist data locally using React's localStorage browser instance
 					localStorage.setItem("id", user.id);
 					localStorage.setItem("user", user);
 					localStorage.setItem("username", emailAddress);
 					localStorage.setItem("password", password);
-		//			localStorage.setItem("name", name);
 					localStorage.setItem("authenticated", true)
 
 			}}).catch(err => {

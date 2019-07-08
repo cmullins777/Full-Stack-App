@@ -38,7 +38,7 @@ class CourseDetail extends Component {
    });
   }
 // Axios DELETE request to delete individual course
-  handleDelete  = (e, emailAddress, password, authenticated) => {
+  handleDelete  = (e) => {
     e.preventDefault();
     axios.delete("http://localhost:5000/api/courses/" + this.props.match.params.id,
     {
@@ -60,18 +60,21 @@ class CourseDetail extends Component {
   }
 
   render() {
+    const { title, description, estimatedTime, materialsNeeded } = this.state.course;
+
     return(
      <Consumer>{ ({ user, userId, authenticated, emailAddress, password, signIn }) => (
       <div id="root">
         <div className="actions--bar">
           <div className="bounds">
             <div className="grid-100">
+    {/* If authenticated and user's Id matches the course creator's Id, allow Update & Delete */}
              { ( authenticated && (userId === this.state.course.userId) )
                ?
               (
                <span>
                 <Link className="button" to={"/courses/"+this.state.course.id+"/update"}>Update Course</Link>
-                <button className="button" onClick={e => this.handleDelete(e, emailAddress, password, signIn)}>Delete Course</button>
+                <button className="button" onClick={e => this.handleDelete(e)}>Delete Course</button>
                </span>
                )
                :
@@ -87,11 +90,11 @@ class CourseDetail extends Component {
         <div className="grid-66">
           <div className="course--header">
             <h4 className="course-label">Course</h4>
-            <h3 className="course--title">{this.state.course.title}</h3>
+            <h3 className="course--title">{title}</h3>
             <p>By {this.state.username} </p>
           </div>
           <div className="course--description">
-            <ReactMarkdown source={this.state.course.description} />
+            <ReactMarkdown source={description} />
           </div>
         </div>
         <div className="grid-25 grid-right">
@@ -99,12 +102,12 @@ class CourseDetail extends Component {
             <ul className="course--stats--list">
               <li className="course--stats--list--item">
                 <h4>Estimated Time</h4>
-                <h3>{this.state.course.estimatedTime}</h3>
+                <h3>{estimatedTime}</h3>
               </li>
               <li className="course--stats--list--item">
                 <h4>Materials Needed</h4>
                 <ul>
-                  <ReactMarkdown source={this.state.course.materialsNeeded} />
+                  <ReactMarkdown source={materialsNeeded} />
                 </ul>
               </li>
             </ul>

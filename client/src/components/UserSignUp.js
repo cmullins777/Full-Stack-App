@@ -25,14 +25,13 @@ class UserSignUp extends Component
 	  e.preventDefault();
 
 	  const { firstName, lastName, emailAddress, password, confirmPassword } = this.state;
-
+// Check password for correctness before submitting new user
 		if (password !== confirmPassword) {
 			this.setState({
 				errMsg: 'Passwords do not match'
 			})
-			console.log(err);
-
 		} else {
+// POST request to add new user to db
 		axios.post("http://localhost:5000/api/users", {firstName, lastName, emailAddress, password})
 		  .then(res => {
 				if(res.status === 201) {
@@ -40,30 +39,29 @@ class UserSignUp extends Component
 					this.setState({
 						errMsg: ""
 					});
-
-					console.log(password, confirmPassword);
+// Persist username, password and redirect signed-in user to Courses page
 					this.context.signIn(null, emailAddress, password);
 				  this.props.history.push("/courses");
 				}
 			})
+// Catch Validation Errors returned from the REST API and display for user guidance, for other errors redirect to Errors page
 			.catch(err => {
 				if(err.response.status === 400){
 					this.setState({
 						errMsg: err.response.data.error.message
 					})
-				} else if (err.status === 401){
+				} else if (err.response.status === 401){
 					this.setState({
-						errMsg: err.response.message
+						errMsg: err.response.data.error.message
 					})
 				}	else {
 					this.props.history.push("/error");
 					console.log(err.response.status);
-					console.log(err.response.data.error.message);
 				}
 			});
-
-	}
+	  }
   }
+	
   	render(){
 			const { firstName, lastName, emailAddress, password, errMsg, signIn } = this.state;
 

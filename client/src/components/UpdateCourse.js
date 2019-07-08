@@ -56,15 +56,11 @@ class UpdateCourse extends Component
 			});
 		};
 
-	// Submit update
-	handleUpdateCourse = (e, err, error, user, emailAddress, password, signIn, authenticated) =>{
+	// Submit updated course info
+	handleUpdateCourse = (e, error, user, emailAddress, password) =>{
 		e.preventDefault();
-//		const { title, description } = this.state;
-//
-//		if (title === "" || description === "") {
-//			this.setState({ errMsg: "Please enter both course title and description" })
-//	  } else {
-// Axios PUT request to post course to api db
+
+// Axios PUT request to post updated course info to API db
 		axios({
 			method: 'put',
 			url: 'http://localhost:5000/api/courses/' + this.props.match.params.id,
@@ -82,35 +78,28 @@ class UpdateCourse extends Component
 				}
 			})
 			.then( res => {
-				// Show course details after updating
+	// Show course details after updating
 				this.props.history.push("/courses/"+this.props.match.params.id);
 				console.log("Course successfully updated");
 			})
+//  Catch Validation Errors returned from the REST API and display for user guidance, for other errors redirect to Errors page
 			.catch(err => {
 				if(err.response.status === 400){
 					this.setState({
 						errMsg: err.response.data.error.message
 					})
-					console.log(err.response.status);
-					console.log(err.response.data.error.message);
-				} else if (err.status === 401){
+				} else if (err.response.status === 401){
 					this.setState({
-						errMsg: err.response.message
+						errMsg: err.response.data.error.message
 					})
 				}	else {
 					this.props.history.push("/error");
 					console.log(err.response.status);
-					console.log(err.response.data.error.message);
 			}
 		});
 					console.log(localStorage.getItem("username"));
 					console.log(localStorage.getItem("password"));
 	}
-
-	handleCancel = (e) => {
-      e.preventDefault();
-      this.props.history.push("/courses");
-  };
 
 	render(){
 		const { title, description, estimatedTime, materialsNeeded, errMsg } = this.state;
