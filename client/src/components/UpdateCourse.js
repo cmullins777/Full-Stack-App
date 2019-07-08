@@ -181,7 +181,7 @@ class UpdateCourse extends Component
 							</div>
 						<div className="grid-100 pad-bottom">
 							<button className="button" type="submit">Update Course</button>
-							<button className="button button-secondary"><Link to="/courses">Cancel</Link></button>
+							<button className="button button-secondary"><Link to={"/courses/" + this.props.match.params.id}>Cancel</Link></button>
 						</div>
 					</form>
 				</div>
